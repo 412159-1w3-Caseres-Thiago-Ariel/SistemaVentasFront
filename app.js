@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // 2. Cargar combos
 async function cargarClientes() {
     try {
-        const respuesta = await fetch('https://apisistemaventas.azurewebsites.net/clientes');
+        const respuesta = await fetch('https://apisistemaventas-bcapexahd3c0d3aj.brazilsouth-01.azurewebsites.net/clientes');
         const clientes = await respuesta.json();
         const combo = document.getElementById('combo-clientes');
         
@@ -24,7 +24,7 @@ let listaProductosGlobal = []; // Variable para guardar los precios
 
 async function cargarProductos() {
     try {
-        const respuesta = await fetch('https://apisistemaventas.azurewebsites.net/productos');
+        const respuesta = await fetch('https://apisistemaventas-bcapexahd3c0d3aj.brazilsouth-01.azurewebsites.net/productos');
         listaProductosGlobal = await respuesta.json(); // Guardamos todo acá
         const combo = document.getElementById('combo-productos');
         
@@ -50,7 +50,7 @@ async function cargarHistorial() {
     }
 
     try {
-        const respuesta = await fetch(`https://apisistemaventas.azurewebsites.net/clientes/${idSeleccionado}/historial`);
+        const respuesta = await fetch(`https://apisistemaventas-bcapexahd3c0d3aj.brazilsouth-01.azurewebsites.net/clientes/${idSeleccionado}/historial`);
         const registros = await respuesta.json();
         
         const contenedorTarjetas = document.getElementById('resultado-historial');
@@ -177,7 +177,7 @@ async function registrarVenta() {
     };
 
     try {
-        const respuesta = await fetch('https://apisistemaventas.azurewebsites.net/ventas', {
+        const respuesta = await fetch('https://apisistemaventas-bcapexahd3c0d3aj.brazilsouth-01.azurewebsites.net/ventas', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(paqueteVenta)
@@ -215,7 +215,7 @@ async function abonarTicket(idVenta, saldoActual) {
     };
 
     try {
-        const respuesta = await fetch('https://apisistemaventas.azurewebsites.net/pagar-ticket', {
+        const respuesta = await fetch('https://apisistemaventas-bcapexahd3c0d3aj.brazilsouth-01.azurewebsites.net/pagar-ticket', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(paquete)
@@ -230,7 +230,7 @@ async function abonarTicket(idVenta, saldoActual) {
     }
 }
 
-// 6. Registrar Nuevo Cliente (¡Acá estaba la fugitiva!)
+// 6. Registrar Nuevo Cliente
 async function registrarCliente() {
     const nombre = document.getElementById('nuevo-cliente-nombre').value;
     const apellido = document.getElementById('nuevo-cliente-apellido').value;
@@ -245,7 +245,7 @@ async function registrarCliente() {
     };
 
     try {
-        const respuesta = await fetch('https://apisistemaventas.azurewebsites.net/clientes', {
+        const respuesta = await fetch('https://apisistemaventas-bcapexahd3c0d3aj.brazilsouth-01.azurewebsites.net/clientes', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(paqueteCliente)
@@ -270,21 +270,20 @@ async function registrarCliente() {
 
 // 7. Función para anular (eliminar) un ticket
 async function eliminarTicket(idVenta) {
-    // Usamos confirm() para que valide antes de borrar, así no lo tocan por accidente
     const confirmacion = confirm("⚠️ ¿Estás seguro que querés anular esta venta? Esta acción no se puede deshacer.");
     
     if (!confirmacion) {
-        return; // Si el usuario toca "Cancelar", cortamos acá y no borramos nada
+        return; 
     }
 
     try {
-        const respuesta = await fetch(`https://apisistemaventas.azurewebsites.net/${idVenta}`, {
+        const respuesta = await fetch(`https://apisistemaventas-bcapexahd3c0d3aj.brazilsouth-01.azurewebsites.net/ventas/${idVenta}`, {
             method: 'DELETE'
         });
 
         if (respuesta.ok) {
             alert("Venta anulada correctamente.");
-            cargarHistorial(); // Refrescamos la pantalla para que la tarjeta desaparezca
+            cargarHistorial(); 
         } else {
             alert("Hubo un error al intentar anular la venta.");
         }
@@ -301,23 +300,19 @@ async function eliminarCliente() {
         return alert("Primero seleccioná un cliente de la lista para eliminar.");
     }
 
-    // Le pedimos confirmación por las dudas
     const confirmacion = confirm("⚠️ ¿Estás seguro que querés archivar a este cliente? Ya no aparecerá en la lista.");
 
     if (!confirmacion) return;
 
     try {
-        const respuesta = await fetch(`https://apisistemaventas.azurewebsites.net/clientes/${idSeleccionado}`, {
+        const respuesta = await fetch(`https://apisistemaventas-bcapexahd3c0d3aj.brazilsouth-01.azurewebsites.net/clientes/${idSeleccionado}`, {
             method: 'DELETE'
         });
 
         if (respuesta.ok) {
             alert("Cliente eliminado de la lista correctamente.");
             
-            // Limpiamos el historial de abajo para que quede en blanco
             document.getElementById('resultado-historial').innerHTML = ''; 
-            
-            // Recargamos los clientes (ahora el que borramos ya no va a venir del backend)
             cargarClientes(); 
         } else {
             alert("Hubo un error al intentar eliminar el cliente.");
@@ -327,7 +322,7 @@ async function eliminarCliente() {
     }
 }
 
-// Función para agregar un producto nuevo al catálogo
+// 9. Función para agregar un producto nuevo al catálogo
 async function registrarProducto() {
     const nombre = document.getElementById('nuevo-producto-nombre').value;
     const categoria = document.getElementById('nuevo-producto-categoria').value;
@@ -344,7 +339,7 @@ async function registrarProducto() {
     };
 
     try {
-        const respuesta = await fetch('https://apisistemaventas.azurewebsites.net/productos', {
+        const respuesta = await fetch('https://apisistemaventas-bcapexahd3c0d3aj.brazilsouth-01.azurewebsites.net/productos', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(paqueteProducto)
@@ -353,12 +348,10 @@ async function registrarProducto() {
         if (respuesta.ok) {
             alert(`¡Producto "${nombre}" registrado en el catálogo!`);
             
-            // Limpiamos los campos
             document.getElementById('nuevo-producto-nombre').value = '';
             document.getElementById('nuevo-producto-categoria').value = '';
             document.getElementById('nuevo-producto-precio').value = '';
             
-            // Recargamos el menú desplegable de ventas
             cargarProductos(); 
         } else {
             alert("Hubo un error al guardar el producto.");
@@ -372,11 +365,9 @@ function autocompletarPrecio() {
     const idSeleccionado = document.getElementById('combo-productos').value;
     const campoPrecio = document.getElementById('venta-precio');
 
-    // Buscamos el producto en nuestra lista guardada
     const productoEncontrado = listaProductosGlobal.find(p => p.Id == idSeleccionado);
 
     if (productoEncontrado) {
-        // Ponemos el precio del catálogo en el cuadrito
         campoPrecio.value = productoEncontrado.Precio;
     } else {
         campoPrecio.value = '';
