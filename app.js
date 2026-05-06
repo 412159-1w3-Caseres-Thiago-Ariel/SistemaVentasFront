@@ -20,12 +20,12 @@ async function cargarClientes() {
     }
 }
 
-let listaProductosGlobal = []; // Variable para guardar los precios
+let listaProductosGlobal = [];
 
 async function cargarProductos() {
     try {
         const respuesta = await fetch('https://apisistemaventas-bcapexahd3c0d3aj.brazilsouth-01.azurewebsites.net/productos');
-        listaProductosGlobal = await respuesta.json(); // Guardamos todo acá
+        listaProductosGlobal = await respuesta.json();
         const combo = document.getElementById('combo-productos');
         
         combo.innerHTML = '<option value="">-- Seleccione un producto --</option>';
@@ -34,7 +34,6 @@ async function cargarProductos() {
             combo.innerHTML += `<option value="${prod.Id}">${prod.Nombre}</option>`;
         });
 
-        // Agregamos un "oído" al combo para que cuando cambie, ejecute una función
         combo.addEventListener('change', autocompletarPrecio);
     } catch (error) {
         console.error('Error al cargar productos:', error);
@@ -54,7 +53,7 @@ async function cargarHistorial() {
         const registros = await respuesta.json();
         
         const contenedorTarjetas = document.getElementById('resultado-historial');
-        const contenedorResumen = document.getElementById('resumen-deuda'); // El div nuevo
+        const contenedorResumen = document.getElementById('resumen-deuda');
         
         contenedorTarjetas.innerHTML = '';
         contenedorResumen.innerHTML = '';
@@ -64,13 +63,11 @@ async function cargarHistorial() {
             return;
         }
 
-        // --- CALCULADORA DE DEUDA TOTAL ---
         let deudaTotal = 0;
         registros.forEach(registro => {
             deudaTotal += registro.Saldo;
         });
 
-        // Dibujamos el cartel de resumen según si debe o no
         if (deudaTotal > 0) {
             contenedorResumen.innerHTML = `
                 <div class="bg-red-50 border-l-4 border-red-500 p-5 rounded-r-xl shadow-sm flex justify-between items-center">
@@ -96,9 +93,7 @@ async function cargarHistorial() {
                 </div>
             `;
         }
-        // ----------------------------------
 
-        // Dibujamos las tarjetas una por una
         registros.forEach(registro => {
             const fechaFormateada = new Date(registro.Fecha).toLocaleDateString('es-AR');
             
@@ -111,13 +106,11 @@ async function cargarHistorial() {
 
             const tarjeta = `
                 <div class="bg-white border border-gray-200 rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow relative">
-                    
                     <button onclick="eliminarTicket(${registro.IdVenta})" class="absolute top-4 right-4 text-red-400 hover:text-red-600 transition-colors" title="Anular esta venta">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                         </svg>
                     </button>
-
                     <div class="flex justify-between items-start mb-3 pr-8">
                         <div>
                             <span class="text-xs font-bold uppercase tracking-wider text-gray-400">Fecha de compra</span>
@@ -129,10 +122,8 @@ async function cargarHistorial() {
                             </span>
                         </div>
                     </div>
-
                     <h3 class="text-xl font-bold text-indigo-700 mb-1">${registro.Producto}</h3>
                     <p class="text-gray-600 text-sm mb-4">Detalle: ${registro.Cant} unidad(es) a $${registro.Precio}</p>
-                    
                     <div class="border-t pt-3 flex justify-between items-center">
                         <div class="text-sm">
                             <span class="text-gray-400">Total Ticket:</span>
@@ -253,12 +244,8 @@ async function registrarCliente() {
 
         if (respuesta.ok) {
             alert(`¡Cliente ${nombre} ${apellido} registrado correctamente!`);
-            
-            // Limpiamos los campos
             document.getElementById('nuevo-cliente-nombre').value = '';
             document.getElementById('nuevo-cliente-apellido').value = '';
-            
-            // Recargamos el menú desplegable al instante
             cargarClientes(); 
         } else {
             alert("Hubo un error al guardar el cliente.");
@@ -311,7 +298,6 @@ async function eliminarCliente() {
 
         if (respuesta.ok) {
             alert("Cliente eliminado de la lista correctamente.");
-            
             document.getElementById('resultado-historial').innerHTML = ''; 
             cargarClientes(); 
         } else {
@@ -347,11 +333,8 @@ async function registrarProducto() {
 
         if (respuesta.ok) {
             alert(`¡Producto "${nombre}" registrado en el catálogo!`);
-            
-            // Limpiamos los campos
             document.getElementById('nuevo-producto-nombre').value = '';
             document.getElementById('nuevo-producto-precio').value = '';
-            
             cargarProductos(); 
         } else {
             alert("Hubo un error al guardar el producto.");
@@ -360,29 +343,6 @@ async function registrarProducto() {
         console.error('Error:', error);
     }
 }
-
-    try {
-        const respuesta = await fetch('https://apisistemaventas-bcapexahd3c0d3aj.brazilsouth-01.azurewebsites.net/productos', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(paqueteProducto)
-        });
-
-        if (respuesta.ok) {
-            alert(`¡Producto "${nombre}" registrado en el catálogo!`);
-            
-            document.getElementById('nuevo-producto-nombre').value = '';
-            document.getElementById('nuevo-producto-categoria').value = '';
-            document.getElementById('nuevo-producto-precio').value = '';
-            
-            cargarProductos(); 
-        } else {
-            alert("Hubo un error al guardar el producto.");
-        }
-    } catch (error) {
-        console.error('Error:', error);
-    }
-
 
 function autocompletarPrecio() {
     const idSeleccionado = document.getElementById('combo-productos').value;
