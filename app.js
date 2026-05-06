@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // 2. Cargar combos
 async function cargarClientes() {
     try {
-        const respuesta = await fetch('https://localhost:7223/clientes');
+        const respuesta = await fetch('https://apisistemaventas.azurewebsites.net/clientes');
         const clientes = await respuesta.json();
         const combo = document.getElementById('combo-clientes');
         
@@ -24,7 +24,7 @@ let listaProductosGlobal = []; // Variable para guardar los precios
 
 async function cargarProductos() {
     try {
-        const respuesta = await fetch('https://localhost:7223/productos');
+        const respuesta = await fetch('https://apisistemaventas.azurewebsites.net/productos');
         listaProductosGlobal = await respuesta.json(); // Guardamos todo acá
         const combo = document.getElementById('combo-productos');
         
@@ -50,7 +50,7 @@ async function cargarHistorial() {
     }
 
     try {
-        const respuesta = await fetch(`https://localhost:7223/clientes/${idSeleccionado}/historial`);
+        const respuesta = await fetch(`https://apisistemaventas.azurewebsites.net/clientes/${idSeleccionado}/historial`);
         const registros = await respuesta.json();
         
         const contenedorTarjetas = document.getElementById('resultado-historial');
@@ -177,7 +177,7 @@ async function registrarVenta() {
     };
 
     try {
-        const respuesta = await fetch('https://localhost:7223/ventas', {
+        const respuesta = await fetch('https://apisistemaventas.azurewebsites.net/ventas', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(paqueteVenta)
@@ -215,7 +215,7 @@ async function abonarTicket(idVenta, saldoActual) {
     };
 
     try {
-        const respuesta = await fetch('https://localhost:7223/pagar-ticket', {
+        const respuesta = await fetch('https://apisistemaventas.azurewebsites.net/pagar-ticket', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(paquete)
@@ -245,7 +245,7 @@ async function registrarCliente() {
     };
 
     try {
-        const respuesta = await fetch('https://localhost:7223/clientes', {
+        const respuesta = await fetch('https://apisistemaventas.azurewebsites.net/clientes', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(paqueteCliente)
@@ -278,7 +278,7 @@ async function eliminarTicket(idVenta) {
     }
 
     try {
-        const respuesta = await fetch(`https://localhost:7223/ventas/${idVenta}`, {
+        const respuesta = await fetch(`https://apisistemaventas.azurewebsites.net/${idVenta}`, {
             method: 'DELETE'
         });
 
@@ -307,7 +307,7 @@ async function eliminarCliente() {
     if (!confirmacion) return;
 
     try {
-        const respuesta = await fetch(`https://localhost:7223/clientes/${idSeleccionado}`, {
+        const respuesta = await fetch(`https://apisistemaventas.azurewebsites.net/clientes/${idSeleccionado}`, {
             method: 'DELETE'
         });
 
@@ -344,7 +344,7 @@ async function registrarProducto() {
     };
 
     try {
-        const respuesta = await fetch('https://localhost:7223/productos', {
+        const respuesta = await fetch('https://apisistemaventas.azurewebsites.net/productos', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(paqueteProducto)
