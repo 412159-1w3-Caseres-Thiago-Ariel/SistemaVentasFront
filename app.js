@@ -325,18 +325,41 @@ async function eliminarCliente() {
 // 9. Función para agregar un producto nuevo al catálogo
 async function registrarProducto() {
     const nombre = document.getElementById('nuevo-producto-nombre').value;
-    const categoria = document.getElementById('nuevo-producto-categoria').value;
     const precio = document.getElementById('nuevo-producto-precio').value;
 
-    if (!nombre || !categoria || !precio) {
-        return alert("Por favor, ingresá el nombre, la categoría y el precio inicial del producto.");
+    if (!nombre || !precio) {
+        return alert("Por favor, ingresá el nombre y el precio inicial del producto.");
     }
 
+    // Le mandamos "General" por defecto para que la API en C# no tire error
     const paqueteProducto = {
         Nombre: nombre,
-        Categoria: categoria,
+        Categoria: "General", 
         Precio: parseFloat(precio)
     };
+
+    try {
+        const respuesta = await fetch('https://apisistemaventas-bcapexahd3c0d3aj.brazilsouth-01.azurewebsites.net/productos', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(paqueteProducto)
+        });
+
+        if (respuesta.ok) {
+            alert(`¡Producto "${nombre}" registrado en el catálogo!`);
+            
+            // Limpiamos los campos
+            document.getElementById('nuevo-producto-nombre').value = '';
+            document.getElementById('nuevo-producto-precio').value = '';
+            
+            cargarProductos(); 
+        } else {
+            alert("Hubo un error al guardar el producto.");
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
 
     try {
         const respuesta = await fetch('https://apisistemaventas-bcapexahd3c0d3aj.brazilsouth-01.azurewebsites.net/productos', {
@@ -359,7 +382,7 @@ async function registrarProducto() {
     } catch (error) {
         console.error('Error:', error);
     }
-}
+
 
 function autocompletarPrecio() {
     const idSeleccionado = document.getElementById('combo-productos').value;
