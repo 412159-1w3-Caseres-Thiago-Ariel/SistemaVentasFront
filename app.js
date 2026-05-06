@@ -1,7 +1,14 @@
-// 1. Carga inicial
-document.addEventListener('DOMContentLoaded', () => {
-    cargarClientes();
-    cargarProductos();
+// 1. Carga inicial con control de Pantalla de Carga
+document.addEventListener('DOMContentLoaded', async () => {
+    // Esperamos a que las dos cosas terminen de cargar al mismo tiempo
+    await Promise.all([cargarClientes(), cargarProductos()]);
+    
+    // Cuando terminan, buscamos la ruedita y la ocultamos con un efecto suave
+    const pantallaCarga = document.getElementById('pantalla-carga');
+    if (pantallaCarga) {
+        pantallaCarga.classList.add('opacity-0'); // Se desvanece
+        setTimeout(() => pantallaCarga.remove(), 500); // A los 0.5 seg la borramos del código
+    }
 });
 
 // 2. Cargar combos
@@ -317,7 +324,6 @@ async function registrarProducto() {
         return alert("Por favor, ingresá el nombre y el precio inicial del producto.");
     }
 
-    // Le mandamos "General" por defecto para que la API en C# no tire error
     const paqueteProducto = {
         Nombre: nombre,
         Categoria: "General", 
