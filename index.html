@@ -8,13 +8,18 @@
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans min-h-screen p-4 md:p-8 relative">
 
-    <div id="pantalla-carga" class="fixed inset-0 bg-white/80 backdrop-blur-sm z-50 flex flex-col items-center justify-center transition-opacity duration-500">
-        <svg class="animate-spin h-14 w-14 text-indigo-600 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-        </svg>
+    <div id="pantalla-carga" class="fixed inset-0 bg-white/90 backdrop-blur-md z-50 flex flex-col items-center justify-center transition-opacity duration-500">
+        
+        <div class="flex items-center justify-center mb-8">
+            <img src="dino triste.webp" alt="Dino Triste" class="w-20 h-20 md:w-28 md:h-28 object-cover rounded-2xl shadow-lg animate-pulse transform -rotate-6 translate-y-3 z-10">
+            
+            <img src="pollitos.webp" alt="Pollitos" class="w-24 h-24 md:w-32 md:h-32 object-cover rounded-2xl shadow-2xl animate-pulse z-20 -mx-4 md:-mx-6 border-4 border-white">
+            
+            <img src="dino feliz.webp" alt="Dino Feliz" class="w-20 h-20 md:w-28 md:h-28 object-cover rounded-2xl shadow-lg animate-pulse transform rotate-6 translate-y-3 z-10">
+        </div>
+
         <p class="text-indigo-900 font-black text-xl animate-pulse">Cargando el sistema...</p>
-        <p class="text-gray-500 text-sm mt-2 font-medium">Conectando con la base de datos ☕</p>
+        <p class="text-gray-500 text-sm mt-2 font-medium">Preparando todo para BCHserviciosintegrales 🚀</p>
     </div>
     <div class="max-w-4xl mx-auto">
         
@@ -46,7 +51,7 @@
                 AGREGAR PRODUCTO AL CATÁLOGO
             </h2>
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <input type="text" id="nuevo-producto-nombre" placeholder="Ej: Fragancia Joy Emotion" class="border border-gray-300 p-3 rounded-xl w-full sm:col-span-2 outline-none focus:ring-2 focus:ring-orange-400">
+                <input type="text" id="nuevo-producto-nombre" placeholder="Ej: Producto..." class="border border-gray-300 p-3 rounded-xl w-full sm:col-span-2 outline-none focus:ring-2 focus:ring-orange-400">
                 <input type="number" id="nuevo-producto-precio" placeholder="Precio ($)" class="border border-gray-300 p-3 rounded-xl w-full outline-none focus:ring-2 focus:ring-orange-400">
             </div>
             <div class="mt-3">
